@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { SERVER_URL } from '../constants.js'
 
 class Carlist extends Component {
 
@@ -7,12 +8,26 @@ class Carlist extends Component {
         this.state = { cars: [] };
     }
 
-// Execute fetch in the componentDidMount() life cycle method. The cars from
-// the JSON response data will be saved to the state, called cars.
+    componentDidMount() {
+        fetch(SERVER_URL + 'api/cars')
+            .then((response) => response.json())
+            .then((responseData) => {
+                this.setState({
+                    cars: responseData._embedded.cars,
+                });
+            })
+            .catch(err => console.error(err));
+    }
 
     render() {
+        const tableRows = this.state.cars.map((car, index) =>
+            <tr key={index}><td>{car.brand}</td>
+                <td>{car.model}</td><td>{car.color}</td>
+                <td>{car.year}</td><td>{car.price}</td></tr>);
         return (
-            <div></div>
+            <div className="App">
+                <table><tbody>{tableRows}</tbody></table>
+            </div>
         );
     }
 }
