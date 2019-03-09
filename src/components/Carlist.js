@@ -21,12 +21,29 @@ class Carlist extends Component {
 
     render() {
         const tableRows = this.state.cars.map((car, index) =>
-            <tr key={index}><td>{car.brand}</td>
-                <td>{car.model}</td><td>{car.color}</td>
-                <td>{car.year}</td><td>{car.price}</td></tr>);
+            <tr key={index}>
+                <td>{car.brand}</td>
+                <td>{car.model}</td>
+                <td>{car.color}</td>
+                <td>{car.year}</td>
+                <td>{car.price}</td>
+            </tr>);
         return (
             <div className="App">
-                <table><tbody>{tableRows}</tbody></table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>brand</th>
+                            <th>model</th>
+                            <th>color</th>
+                            <th>year</th>
+                            <th>price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tableRows}
+                    </tbody>
+                </table>
             </div>
         );
     }
