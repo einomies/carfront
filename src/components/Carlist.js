@@ -4,6 +4,7 @@ import ReactTable from "react-table";
 import 'react-table/react-table.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
+import AddCar from './AddCar.js';
 
 class Carlist extends Component {
 
