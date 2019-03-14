@@ -5,6 +5,8 @@ import 'react-table/react-table.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import AddCar from './AddCar.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class Carlist extends Component {
 
@@ -59,8 +61,18 @@ class Carlist extends Component {
     onDelClick = (link) => {
         console.log('delete car: ' + link)
         fetch(link, { method: 'DELETE' })
-            .then(res => this.fetchCars())
-            .catch(err => console.error(err))
+            .then(res => {
+                toast.success("Car deleted", {
+                    position: toast.POSITION.BOTTOM_LEFT
+                });
+                this.fetchCars();
+            })
+            .catch(err => {
+                toast.error("Error when deleting", {
+                    position: toast.POSITION.BOTTOM_LEFT
+                });
+                console.error(err)
+            })
     }
 
     confirmDelete = (link) => {
@@ -125,6 +137,9 @@ class Carlist extends Component {
                 <AddCar addCar={this.addCar} fetchCars={this.fetchCars} />
                 <ReactTable data={this.state.cars} columns={columns} filterable={true}
                     pageSize={10} />
+                {/* ToastContainer is the container component for showing toast messages, and it should be
+inside the render() method. In ToastContainer, you can define the duration of the toast
+message in milliseconds using the autoClose prop. */}
                 <ToastContainer autoClose={1500} />
             </div>
         );

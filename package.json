@@ -8,7 +8,8 @@
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.5",
     "react-skylight": "^0.5.1",
-    "react-table": "^6.9.2"
+    "react-table": "^6.9.2",
+    "react-toastify": "^4.5.2"
   },
   "scripts": {
     "start": "react-scripts start",
