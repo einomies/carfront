@@ -11,7 +11,7 @@ class AddCar extends React.Component {
             year: '',
             color: '',
             price: ''
-        }
+        };
     }
     // Add a form inside the render() method. The form contains the
     // ReactSkylight modal form component with buttons and the input fields that
@@ -23,7 +23,31 @@ class AddCar extends React.Component {
     handleChange = (event) => {
         this.setState(
             { [event.target.name]: event.target.value }
-        )
+        );
+    }
+
+    // Implement the handleSubmit and cancelSubmit functions to the AddCar.js
+    // file. The handleSubmit function creates a new car object and calls the addCar
+    // function, which can be accessed using props. The cancelSubmit function just
+    // closes the modal form.
+
+    // Save car and close modal form
+    handleSubmit = (event) => {
+        event.preventDefault();
+        var newCar =
+        {
+            brand: this.state.brand,
+            model: this.state.model,
+            color: this.state.color,
+            year: this.state.year,
+            price: this.state.price
+        }
+    }
+
+    // Cancel and close modal form
+    cancelSubmit = (event) => {
+        event.preventDefault();
+        this.refs.addDialog.hide();
     }
 
     render() {

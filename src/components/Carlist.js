@@ -34,6 +34,26 @@ class Carlist extends Component {
             .catch(err => console.error(err));
     }
 
+    // Implement the addCar function to the Carlist.js file that will send the POST
+    // request to the backend api/cars endpoint. The request will include the new car
+    // object inside the body and the 'Content-Type': 'application/json'
+    // header. The header is needed because the car object is converted to JSON format
+    // using the JSON.stringify() method.
+    addCar(car) {
+        fetch(
+            SERVER_URL + 'api/cars',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(car)
+            }
+        )
+            .then(res => this.fetchCars())
+            .catch(err => console.error(err))
+    }
+
     // We send the DELETE request to a car link, and when the delete succeeds,
     // we refresh the list page by calling the fetchCars() function.
     onDelClick = (link) => {
@@ -97,9 +117,15 @@ class Carlist extends Component {
                     )
             }
         ]
+        // Add the AddCar component to the render() method and pass the addCar and
+        // fetchCars functions as props to the AddCar component that allows us to call
+        // these functions from the AddCar component.
         return (
             <div className="App">
-                <ReactTable data={this.state.cars} columns={columns} filterable={true} />
+                <AddCar addCar={this.addCar} fetchCars={this.fetchCars} />
+                <ReactTable data={this.state.cars} columns={columns} filterable={true}
+                    pageSize={10} />
+                <ToastContainer autoClose={1500} />
             </div>
         );
     }
