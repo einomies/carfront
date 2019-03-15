@@ -25,7 +25,7 @@ class Carlist extends Component {
         this.fetchCars();
     }
 
-    fetchCars() {
+    fetchCars = () => {
         fetch(SERVER_URL + 'api/cars')
             .then((response) => response.json())
             .then((responseData) => {
@@ -42,16 +42,14 @@ class Carlist extends Component {
     // header. The header is needed because the car object is converted to JSON format
     // using the JSON.stringify() method.
     addCar(car) {
-        fetch(
-            SERVER_URL + 'api/cars',
+        fetch(SERVER_URL + 'api/cars',
             {
                 method: 'POST',
                 headers: {
-                    'Content-type': 'application/json',
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(car)
-            }
-        )
+            })
             .then(res => this.fetchCars())
             .catch(err => console.error(err))
     }
@@ -125,21 +123,21 @@ class Carlist extends Component {
                 width: 100,
                 accessor: '_links.self.href',
                 Cell: (
-                    { value }) => (<button onClick={() => { this.confirmDelete(value) }}>Delete</button>
-                    )
+                    { value }) =>
+                    (<button onClick={() => { this.confirmDelete(value) }}>Delete</button>)
             }
         ]
         // Add the AddCar component to the render() method and pass the addCar and
         // fetchCars functions as props to the AddCar component that allows us to call
         // these functions from the AddCar component.
+        // ToastContainer is the container component for showing toast messages, and it should be
+        // inside the render() method. In ToastContainer, you can define the duration of the toast
+        // message in milliseconds using the autoClose prop.
         return (
             <div className="App">
                 <AddCar addCar={this.addCar} fetchCars={this.fetchCars} />
-                <ReactTable data={this.state.cars} columns={columns} filterable={true}
-                    pageSize={10} />
-                {/* ToastContainer is the container component for showing toast messages, and it should be
-inside the render() method. In ToastContainer, you can define the duration of the toast
-message in milliseconds using the autoClose prop. */}
+                <ReactTable data={this.state.cars} columns={columns}
+                    filterable={true} pageSize={10} />
                 <ToastContainer autoClose={1500} />
             </div>
         );

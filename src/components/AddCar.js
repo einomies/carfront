@@ -34,14 +34,13 @@ class AddCar extends React.Component {
     // Save car and close modal form
     handleSubmit = (event) => {
         event.preventDefault();
-        var newCar =
-        {
-            brand: this.state.brand,
-            model: this.state.model,
-            color: this.state.color,
-            year: this.state.year,
+        var newCar = {
+            brand: this.state.brand, model: this.state.model,
+            color: this.state.color, year: this.state.year,
             price: this.state.price
-        }
+        };
+        this.props.addCar(newCar);
+        this.refs.addDialog.hide();
     }
 
     // Cancel and close modal form
@@ -71,7 +70,8 @@ class AddCar extends React.Component {
                     </form>
                 </SkyLight>
                 <div>
-                    <button style={{ 'margin': '10px' }} onClick={() => this.refs.addDialog.show()}>New car</button>
+                    <button style={{ 'margin': '10px' }}
+                        onClick={() => this.refs.addDialog.show()}>New car</button>
                 </div>
             </div>
         );
