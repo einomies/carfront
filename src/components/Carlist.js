@@ -54,6 +54,28 @@ class Carlist extends Component {
             .catch(err => console.error(err))
     }
 
+    // Update car
+    updateCar(car, link) {
+        fetch(link,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(car)
+            })
+            .then(res =>
+                toast.success("Changes saved", {
+                    position: toast.POSITION.BOTTOM_LEFT
+                })
+            )
+            .catch(err =>
+                toast.error("Error when saving", {
+                    position: toast.POSITION.BOTTOM_LEFT
+                })
+            )
+    }
+
     // We send the DELETE request to a car link, and when the delete succeeds,
     // we refresh the list page by calling the fetchCars() function.
     onDelClick = (link) => {
@@ -90,6 +112,30 @@ class Carlist extends Component {
         )
     }
 
+    // The cell will be the div element and the contentEditable attribute
+    // makes it editable. suppressContentEditableWarning suppresses the warning
+    // that comes when the element with the child is marked to be editable. 
+    // The function in onBlur is  executed when the user leaves the table cell, 
+    // and this is where we will update the state.
+    renderEditable = (cellInfo) => {
+        return (
+            <div
+                style={{ backgroundColor: "#fafafa" }}
+                contentEditable
+                suppressContentEditableWarning
+                onBlur={e => {
+                    const data = [...this.state.cars];
+                    data[cellInfo.index][cellInfo.column.id] =
+                        e.target.innerHTML;
+                    this.setState({ cars: data });
+                }}
+                dangerouslySetInnerHTML={{
+                    __html: this.state.cars[cellInfo.index][cellInfo.column.id]
+                }}
+            />
+        );
+    }
+
     render() {
         // The data prop of React Table is this.state.cars, which contains fetched cars.
         // We also have to define the columns of the table, where accessor is the field
@@ -98,23 +144,43 @@ class Carlist extends Component {
         const columns = [
             {
                 Header: 'Brand',
-                accessor: 'brand'
+                accessor: 'brand',
+                Cell: this.renderEditable
             },
             {
                 Header: 'Model',
-                accessor: 'model'
+                accessor: 'model',
+                Cell: this.renderEditable
             },
             {
                 Header: 'Color',
-                accessor: 'color'
+                accessor: 'color',
+                Cell: this.renderEditable
             },
             {
                 Header: 'Year',
-                accessor: 'year'
+                accessor: 'year',
+                Cell: this.renderEditable
             },
             {
                 Header: 'Price €',
-                accessor: 'price'
+                accessor: 'price',
+                Cell: this.renderEditable
+            },
+            // Save button: When the user presses the button, it calls the updateCar
+            // function and passes two arguments. The first argument is row, which is
+            // all values in the row as an object (=car object). The second argument
+            // is value, which is set to be _links.href.self, which will be the URL
+            // of the car that we need in the request.
+            {
+                id: 'savebutton',
+                sortable: false,
+                filterable: false,
+                width: 100,
+                accessor: '_links.self.href',
+                Cell: ({ value, row }) =>
+                    (<button onClick={() => { this.updateCar(row, value) }}>
+                        Save</button>)
             },
             {
                 id: 'delbutton',
