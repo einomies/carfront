@@ -7,6 +7,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'
 import AddCar from './AddCar.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CSVLink } from 'react-csv';
 
 class Carlist extends Component {
 
@@ -196,15 +197,23 @@ class Carlist extends Component {
         // Add the AddCar component to the render() method and pass the addCar and
         // fetchCars functions as props to the AddCar component that allows us to call
         // these functions from the AddCar component.
+
         // ToastContainer is the container component for showing toast messages, and it should be
         // inside the render() method. In ToastContainer, you can define the duration of the toast
         // message in milliseconds using the autoClose prop.
+
+        // The CSVLink component takes the data prop, which contains the data array that will be
+        // exported to the CSV file. You can also define the data separator using the separator prop
+        // (the default separator is a comma). Add the CSVLink component inside the return
+        // statement in the render() method. The value of the data prop will now be
+        // this.state.cars.
         return (
             <div className="App">
+                <CSVLink data={this.state.cars} separator=";">Export CSV</CSVLink>
                 <AddCar addCar={this.addCar} fetchCars={this.fetchCars} />
                 <ReactTable data={this.state.cars} columns={columns}
                     filterable={true} pageSize={10} />
-                <ToastContainer autoClose={1500} />
+                <ToastContainer autoClose={6500} />
             </div>
         );
     }
