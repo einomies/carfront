@@ -1,5 +1,6 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
+import Button from '@material-ui/core/Button';
 
 class AddCar extends React.Component {
 
@@ -65,13 +66,17 @@ class AddCar extends React.Component {
                             onChange={this.handleChange} /><br />
                         <input type="text" placeholder="Price" name="price"
                             onChange={this.handleChange} /><br />
-                        <button onClick={this.handleSubmit}>Save</button>
-                        <button onClick={this.cancelSubmit}>Cancel</button>
+                        <Button variant="outlined" color="primary"
+                            onClick={this.handleSubmit}>Save</Button>
+                        <Button variant="outlined" color="secondary"
+                            onClick={this.cancelSubmit}>Cancel</Button>
                     </form>
                 </SkyLight>
                 <div>
-                    <button style={{ 'margin': '10px' }}
-                        onClick={() => this.refs.addDialog.show()}>New car</button>
+                    <Button variant="raised" color="primary"
+                        style={{ 'margin': '10px' }}
+                        onClick={() => this.refs.addDialog.show()}>
+                        New Car</Button>
                 </div>
             </div>
         );

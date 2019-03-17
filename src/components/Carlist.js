@@ -8,6 +8,8 @@ import AddCar from './AddCar.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CSVLink } from 'react-csv';
+import { Button } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 
 class Carlist extends Component {
 
@@ -180,8 +182,9 @@ class Carlist extends Component {
                 width: 100,
                 accessor: '_links.self.href',
                 Cell: ({ value, row }) =>
-                    (<button onClick={() => { this.updateCar(row, value) }}>
-                        Save</button>)
+                    (<Button size="small" variant="flat" color="primary"
+                        onClick={() => { this.updateCar(row, value) }}>
+                        Save</Button>)
             },
             {
                 id: 'delbutton',
@@ -191,7 +194,8 @@ class Carlist extends Component {
                 accessor: '_links.self.href',
                 Cell: (
                     { value }) =>
-                    (<button onClick={() => { this.confirmDelete(value) }}>Delete</button>)
+                    (<Button size="small" variant="flat" color="secondary"
+                        onClick={() => { this.confirmDelete(value) }}>Delete</Button>)
             }
         ]
         // Add the AddCar component to the render() method and pass the addCar and
@@ -207,10 +211,21 @@ class Carlist extends Component {
         // (the default separator is a comma). Add the CSVLink component inside the return
         // statement in the render() method. The value of the data prop will now be
         // this.state.cars.
+
+        // We wrap AddCar and CSVLink inside the Grid components. There are two types of
+        // Grid components—a container and an item. Both components are wrapped inside the
+        // item's Grid components. Then both items' Grid components are wrapped inside the
+        // container's Grid component.
         return (
             <div className="App">
-                <CSVLink data={this.state.cars} separator=";">Export CSV</CSVLink>
-                <AddCar addCar={this.addCar} fetchCars={this.fetchCars} />
+                <Grid container>
+                    <Grid item>
+                        <AddCar addCar={this.addCar} fetchCars={this.fetchCars} />
+                    </Grid>
+                    <Grid item style={{ padding: 20 }}>
+                        <CSVLink data={this.state.cars} separator=";">Export CSV</CSVLink>
+                    </Grid>
+                </Grid>
                 <ReactTable data={this.state.cars} columns={columns}
                     filterable={true} pageSize={10} />
                 <ToastContainer autoClose={6500} />
