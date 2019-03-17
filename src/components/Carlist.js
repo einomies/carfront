@@ -5,17 +5,19 @@ import 'react-table/react-table.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import AddCar from './AddCar.js';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { CSVLink } from 'react-csv';
 import { Button } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import Snackbar from '@material-ui/core/Snackbar';
 
 class Carlist extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { cars: [] };
+        this.state = {
+            cars: [],
+            open: false, message: ''
+        };
     }
 
     // We take the fetchCars function out from the componentDidMount() method. That
@@ -37,6 +39,38 @@ class Carlist extends Component {
                 });
             })
             .catch(err => console.error(err));
+    }
+
+    // We send the DELETE request to a car link, and when the delete succeeds,
+    // we refresh the list page by calling the fetchCars() function.
+    onDelClick = (link) => {
+        console.log('delete car: ' + link)
+        fetch(link, { method: 'DELETE' })
+            .then(res => {
+                this.setState({ open: true, message: 'Car deleted' });
+                this.fetchCars();
+            })
+            .catch(err => {
+                this.setState({ open: true, message: 'Error when deleting' });
+                console.error(err);
+            })
+    }
+
+    confirmDelete = (link) => {
+        confirmAlert(
+            {
+                message: 'Are you sure to delete?',
+                buttons: [
+                    {
+                        label: 'Yes',
+                        onClick: () => this.onDelClick(link)
+                    },
+                    {
+                        label: 'No',
+                    }
+                ]
+            }
+        )
     }
 
     // Implement the addCar function to the Carlist.js file that will send the POST
@@ -68,51 +102,11 @@ class Carlist extends Component {
                 body: JSON.stringify(car)
             })
             .then(res =>
-                toast.success("Changes saved", {
-                    position: toast.POSITION.BOTTOM_LEFT
-                })
+                this.setState({ open: true, message: 'Changes saved' })
             )
             .catch(err =>
-                toast.error("Error when saving", {
-                    position: toast.POSITION.BOTTOM_LEFT
-                })
+                this.setState({ open: true, message: 'Error when saving' })
             )
-    }
-
-    // We send the DELETE request to a car link, and when the delete succeeds,
-    // we refresh the list page by calling the fetchCars() function.
-    onDelClick = (link) => {
-        console.log('delete car: ' + link)
-        fetch(link, { method: 'DELETE' })
-            .then(res => {
-                toast.success("Car deleted", {
-                    position: toast.POSITION.BOTTOM_LEFT
-                });
-                this.fetchCars();
-            })
-            .catch(err => {
-                toast.error("Error when deleting", {
-                    position: toast.POSITION.BOTTOM_LEFT
-                });
-                console.error(err)
-            })
-    }
-
-    confirmDelete = (link) => {
-        confirmAlert(
-            {
-                message: 'Are you sure to delete?',
-                buttons: [
-                    {
-                        label: 'Yes',
-                        onClick: () => this.onDelClick(link)
-                    },
-                    {
-                        label: 'No',
-                    }
-                ]
-            }
-        )
     }
 
     // The cell will be the div element and the contentEditable attribute
@@ -138,6 +132,10 @@ class Carlist extends Component {
             />
         );
     }
+
+    handleClose = (event, reason) => {
+        this.setState({ open: false });
+    };
 
     render() {
         // The data prop of React Table is this.state.cars, which contains fetched cars.
@@ -228,7 +226,10 @@ class Carlist extends Component {
                 </Grid>
                 <ReactTable data={this.state.cars} columns={columns}
                     filterable={true} pageSize={10} />
-                <ToastContainer autoClose={3000} />
+                <Snackbar
+                    style={{ width: 300, color: 'green' }}
+                    open={this.state.open} onClose={this.handleClose}
+                    autoHideDuration={2000} message={this.state.message} />
             </div>
         );
     }
