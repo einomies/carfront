@@ -1,6 +1,7 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 class AddCar extends React.Component {
 
@@ -56,16 +57,16 @@ class AddCar extends React.Component {
                 <SkyLight hideOnOverlayClicked ref="addDialog">
                     <h3>New car</h3>
                     <form>
-                        <input type="text" placeholder="Brand" name="brand"
-                            onChange={this.handleChange} /><br />
-                        <input type="text" placeholder="Model" name="model"
-                            onChange={this.handleChange} /><br />
-                        <input type="text" placeholder="Color" name="color"
-                            onChange={this.handleChange} /><br />
-                        <input type="text" placeholder="Year" name="year"
-                            onChange={this.handleChange} /><br />
-                        <input type="text" placeholder="Price" name="price"
-                            onChange={this.handleChange} /><br />
+                        <TextField label="Brand" placeholder="Brand"
+                            name="brand" onChange={this.handleChange} /><br />
+                        <TextField label="Model" placeholder="Model"
+                            name="model" onChange={this.handleChange} /><br />
+                        <TextField label="Color" placeholder="Color"
+                            name="color" onChange={this.handleChange} /><br />
+                        <TextField label="Year" placeholder="Year"
+                            name="year" onChange={this.handleChange} /><br />
+                        <TextField label="Price" placeholder="Price"
+                            name="price" onChange={this.handleChange} /><br />
                         <Button variant="outlined" color="primary"
                             onClick={this.handleSubmit}>Save</Button>
                         <Button variant="outlined" color="secondary"
