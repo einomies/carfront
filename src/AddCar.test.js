@@ -3,6 +3,8 @@ import AddCar from './components/AddCar';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
+console.log('React.version: ' +React.version)
+
 // We are going to create an Enzyme shallow-rendering test for our AddCar
 // component. The first test case renders the component and checks that there are
 // five TextInput components, as there should be. wrapper.find finds every
