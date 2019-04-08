@@ -30,8 +30,16 @@ class Carlist extends Component {
         this.fetchCars();
     }
 
+    // To fetch the cars, we first have to read the token from the session storage and 
+    // then add the Authorization header with the token value to the request.
     fetchCars = () => {
-        fetch(SERVER_URL + 'api/cars')
+        // Read the token from the session storage
+        // and include it to Authorization header
+        const token = sessionStorage.getItem("jwt");
+        fetch(SERVER_URL + 'api/cars',
+            {
+                headers: { 'Authorization': token }
+            })
             .then((response) => response.json())
             .then((responseData) => {
                 this.setState({

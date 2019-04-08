@@ -46,20 +46,24 @@ class Login extends Component {
     }
 
     render() {
-        return (
-            <div>
-                <TextField name="username" placeholder="Username"
-                    onChange={this.handleChange} />
-                <br />
-                <TextField name="password" placeholder="Password"
-                    onChange={this.handleChange} />
-                <br />
-                <br />
-                <Button variant="raised" color="primary" onClick={this.login}>
-                    Login
-                </Button>
-            </div>
-        )
+        if (this.state.isAuthenticated === true) {
+            return (<Carlist />)
+        } else {
+            return (
+                <div>
+                    <TextField name="username" placeholder="Username"
+                        onChange={this.handleChange} />
+                    <br />
+                    <TextField name="password" placeholder="Password"
+                        onChange={this.handleChange} />
+                    <br />
+                    <br />
+                    <Button variant="raised" color="primary" onClick={this.login}>
+                        Login
+                    </Button>
+                </div>
+            )
+        }
     }
 }
 
