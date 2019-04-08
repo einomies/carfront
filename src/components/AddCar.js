@@ -37,8 +37,10 @@ class AddCar extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         var newCar = {
-            brand: this.state.brand, model: this.state.model,
-            color: this.state.color, year: this.state.year,
+            brand: this.state.brand,
+            model: this.state.model,
+            color: this.state.color,
+            year: this.state.year,
             price: this.state.price
         };
         this.props.addCar(newCar);

@@ -16,7 +16,8 @@ class Carlist extends Component {
         super(props);
         this.state = {
             cars: [],
-            open: false, message: ''
+            open: false,
+            message: ''
         };
     }
 
@@ -53,14 +54,20 @@ class Carlist extends Component {
     // we refresh the list page by calling the fetchCars() function.
     onDelClick = (link) => {
         console.log('delete car: ' + link)
-        fetch(link, { method: 'DELETE' })
+        const token = sessionStorage.getItem("jwt");
+        fetch(link,
+            {
+                method: 'DELETE',
+                headers: { 'Authorization': token }
+            }
+        )
             .then(res => {
                 this.setState({ open: true, message: 'Car deleted' });
                 this.fetchCars();
             })
             .catch(err => {
                 this.setState({ open: true, message: 'Error when deleting' });
-                console.error(err);
+                console.error(err)
             })
     }
 
@@ -87,25 +94,33 @@ class Carlist extends Component {
     // header. The header is needed because the car object is converted to JSON format
     // using the JSON.stringify() method.
     addCar(car) {
+        const token = sessionStorage.getItem("jwt");
         fetch(SERVER_URL + 'api/cars',
             {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': token
                 },
                 body: JSON.stringify(car)
             })
             .then(res => this.fetchCars())
+            // .then(res => {
+            //     this.setState({ open: true, message: 'Car added' });
+            //     this.fetchCars();
+            // })
             .catch(err => console.error(err))
     }
 
     // Update car
     updateCar(car, link) {
+        const token = sessionStorage.getItem("jwt");
         fetch(link,
             {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': token
                 },
                 body: JSON.stringify(car)
             })
