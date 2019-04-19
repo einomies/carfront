@@ -3,6 +3,7 @@ import { SERVER_URL } from '../constants.js';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Carlist from './Carlist';
+import Snackbar from '@material-ui/core/Snackbar';
 
 class Login extends Component {
 
@@ -11,12 +12,19 @@ class Login extends Component {
         this.state = {
             username: '',
             password: '',
-            isAuthenticated: false
+            isAuthenticated: false,
+            open: false
         };
     }
 
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
+    }
+
+    // We need a state handler for the Snackbar open state to close Snackbar after
+    // the time that we set in the Snackbar autoHideDuration props.
+    handleClose = (event) => {
+        this.setState({ open: false });
     }
 
     // Login is done by calling the /login endpoint using the POST method and sending
@@ -38,11 +46,18 @@ class Login extends Component {
                 if (jwtToken !== null) {
                     sessionStorage.setItem("jwt", jwtToken);
                     this.setState({ isAuthenticated: true });
+                } else {
+                    this.setState({ open: true })
                 }
             })
             .catch(err => {
                 console.error(err)
             })
+    }
+
+    logout = () => {
+        sessionStorage.removeItem("jwt");
+        this.setState({ isAuthenticated: false });
     }
 
     render() {
@@ -55,12 +70,15 @@ class Login extends Component {
                         onChange={this.handleChange} />
                     <br />
                     <TextField name="password" placeholder="Password"
-                        onChange={this.handleChange} />
+                        onChange={this.handleChange} type="password" />
                     <br />
                     <br />
                     <Button variant="raised" color="primary" onClick={this.login}>
                         Login
                     </Button>
+                    <Snackbar
+                        open={this.state.open} onClose={this.handleClose}
+                        autoHideDuration={1500} message='Check your username and password' />
                 </div>
             )
         }
